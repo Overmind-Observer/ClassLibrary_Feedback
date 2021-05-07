@@ -6,11 +6,18 @@ namespace ClassLibrary_Feedback
 {
 
 
-    
+
     class Feedback
     {
         // Feedback state
-        private bool IsSent = false;
+        private readonly bool _IsSent = false;
+
+        public bool IsSent
+        {
+            get => _IsSent;
+            set { }
+        
+        }
 
         // Declair parameters
         // User name with lenght check (no more than 20 char) and can not be empty check
@@ -22,7 +29,7 @@ namespace ClassLibrary_Feedback
             _UserName = value;
         }
         // Email with email validation (in progress)
-        private string _Email;
+        private readonly string _Email;
         public string Email
         {
             get => _Email;
@@ -30,11 +37,8 @@ namespace ClassLibrary_Feedback
 
             set
             {
-                bool IsValidEmail(string _Email)
-                {
-                    MailAddress addr = new MailAddress(_Email);
-                    return addr.Address == _Email;
-                }
+                _ = new MailAddress(_Email); // have feeling that it is not correct !?
+                _ = Email;
             }
         }
         // Message text can be empty
