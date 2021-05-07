@@ -96,7 +96,7 @@ namespace ClassLibrary_Feedback
             }
             catch
             {
-                throw new Exception("your message was not send");
+                throw new Exception("the message was not send");
             }
            
         }
