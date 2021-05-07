@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Mail;
 
@@ -7,34 +6,24 @@ namespace ClassLibrary_Feedback
 {
     class Feedback
     {
-
-        // Fedback states
-
-#pragma warning disable IDE0052 // Remove unread private members
-        private bool IsSent = false;
-#pragma warning restore IDE0052 // Remove unread private members
-
-
         // Declair parameters
 
         private string UserName;
         public string username
         {
-            get { return UserName; }
-            set
-            {
-                _ = value != null && value.Length <= 20;
-                UserName = value; 
-            }
+            get => UserName;
+            set => _ =UserName == null || UserName.Length > 20 ? throw new Exception("too long or empty name") :    
+            UserName = value;
         }
 
         private string Email;
         public string email
         {
-            get { return Email; }
+            get => Email;
 
 
-            set {
+            set
+            {
 #pragma warning disable CS8321 // Local function is declared but never used
                 bool IsEmailValid(string Email)
 #pragma warning restore CS8321 // Local function is declared but never used
@@ -58,28 +47,25 @@ namespace ClassLibrary_Feedback
         private string Text;
         public string text
         {
-            get { return Text; }
-            set { Text = value; }
+            get => Text;
+            set => Text = value;
         }
 
         private int Raiting;
 
         public int raiting
         {
-            get { return Raiting; }
-            set 
-            {
-                _ = value >= 1 && value <= 5;
+            get => Raiting;
+            set => _ = Raiting < 1 || Raiting > 5 ? throw new Exception("wrong value") :
                 Raiting = value;
-            }
         }
 
         private DateTime Date;
 
         public DateTime date
         {
-            get { return Date; }
-            set { Date = value; }
+            get => Date;
+            set => Date = value;
         }
         // sending the feedback
 
@@ -100,8 +86,6 @@ namespace ClassLibrary_Feedback
                 Credentials = new NetworkCredential(from.Address, "UQtest0!")
             };
             smtpClient.Send(msg);
-
-            IsSent = true;
         }
     }
 }
