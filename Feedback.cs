@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Net;
+using System.Net.Mail;
 
 namespace ClassLibrary_Feedback
 {
@@ -16,24 +18,46 @@ namespace ClassLibrary_Feedback
         public string Email { get; private set; }
         public string Text { get; private set; }
         public int Raiting { get; private set; }
+        public DateTime Date { get; private set; }
 
-        public DateTime Date = DateTime.UtcNow;
 
-        // Email validation
-        private bool IsValid(string Email)
+        /*// Email validation
+
+        bool IsValid(string Email)
         {
             string pattern = "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}";
             Match isMatch = Regex.Match(Email, pattern, RegexOptions.IgnoreCase);
             return isMatch.Success;
-        }
-        /// <summary>
-        /// Check the Feedback state
-        /// </summary>
+        }*/
+
+       
+        // Check the Feedback state and business conditions
+        
         public void Sending()
         {
-            _ = UserName.Length <= 20 && UserName != null ? IsSent = true : IsSent = false;
-            _ = Raiting <=5 && Raiting >=1 ? IsSent = true : IsSent = false;
-            _ = IsSent != true ? "please submit your feedback" : "you have already sent your feedback";
+
+            MailAddress from = new MailAddress("UltimateQuarry@gmail.com");
+            MailAddress to = new MailAddress("UQ_SupporTeam@gmail.com");
+            MailMessage msg = new MailMessage(from, to);
+            msg.Body = "From: "+ UserName + ", Contact Email:" + Email + ". Feedback" + Text + ", Service rating: " + Raiting + ", Date: " + Date;
+
+            SmtpClient smtpClient = new SmtpClient
+            {
+                Host = "smtp@gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(from.Address, "UQtest0!")
+            };
+
+
+
+
+            /*_ = UserName.Length <= 20 && UserName != null ? IsSent = true : IsSent = false;
+            _ = Email != null ? IsSent = true : IsSent = false;
+            _ = Raiting <= 5 && Raiting >= 1 ? IsSent = true : IsSent = false;
+            _ = IsSent != true ? "please submit your feedback" : "you have already sent your feedback";*/
         }
     }
 }
