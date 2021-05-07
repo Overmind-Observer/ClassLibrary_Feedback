@@ -11,31 +11,45 @@ namespace ClassLibrary_Feedback
         // Fedback states
         
         private bool IsSent;
-        
-        // Getting details
 
-        public string UserName { get; private set; }
-        public string Email { get; private set; }
-        public string Text { get; private set; }
-        public int Raiting { get; private set; }
-        public DateTime Date { get; private set; }
+        // Getting parameters
 
+        private string UserName;
+        private string Email;
+        private string Text;
+        private int Raiting;
+        private DateTime Date;
 
-        /*// Email validation
-
-        bool IsValid(string Email)
+        // Checking Name lenght (no more then 20 char)
+        public void SetUserName(string UserName)
         {
-            string pattern = "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}";
-            Match isMatch = Regex.Match(Email, pattern, RegexOptions.IgnoreCase);
-            return isMatch.Success;
-        }*/
-
-       
-        // Check the Feedback state and business conditions
-        
-        public void Sending()
+            _ = UserName != null && UserName.Length <= 20;
+        }
+        // Checking Email validation
+        public bool SetEmailValid(string Email)
         {
+                try
+                {
+                    var addr = new System.Net.Mail.MailAddress(Email);
+                    return addr.Address == Email;
+                }
+                catch
+                {
+                    return false;
+                }
+        }
+        // Setting Raiting range between 1 and 5
+        public void SetRaitingRule(int Raiting)
+        {
+            _ = Raiting >= 1 && Raiting <= 5;
+        }
 
+
+
+        // sending the feedback
+
+        public void Send()
+        {
             MailAddress from = new MailAddress("UltimateQuarry@gmail.com");
             MailAddress to = new MailAddress("UQ_SupporTeam@gmail.com");
             MailMessage msg = new MailMessage(from, to);
@@ -50,14 +64,6 @@ namespace ClassLibrary_Feedback
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(from.Address, "UQtest0!")
             };
-
-
-
-
-            /*_ = UserName.Length <= 20 && UserName != null ? IsSent = true : IsSent = false;
-            _ = Email != null ? IsSent = true : IsSent = false;
-            _ = Raiting <= 5 && Raiting >= 1 ? IsSent = true : IsSent = false;
-            _ = IsSent != true ? "please submit your feedback" : "you have already sent your feedback";*/
         }
     }
 }
