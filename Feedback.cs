@@ -6,7 +6,7 @@ namespace ClassLibrary_Feedback
 
 
     [Serializable]
-    class Feedback
+    public class Feedback
     {
         // Feedback state
         private bool _IsSent = false;
@@ -69,7 +69,7 @@ namespace ClassLibrary_Feedback
         }
 
         // sending the feedback
-        public void Send()
+        public void Send(string email)
         {
             if (Email == null)
                 throw new Exception("Email cannot be empty");

@@ -10,7 +10,7 @@ namespace ClassLibrary_Feedback
     /// 2. Receiving feedback by email(the only email should be unique).
     /// For testing purpose, both requirements realized by JSON serialization.
     /// </summary>
-    class NetworkManager
+    public class NetworkManager
     {
 
         static string GetPath(string email)
