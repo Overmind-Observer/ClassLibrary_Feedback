@@ -27,7 +27,8 @@ namespace ClassLibrary_Feedback
             get => _UserName;
             set
             {
-                if (value == "" || value.Length > 20) { throw new Exception("too long or empty name"); }
+                if (value == null || value == "" || value.Length > 20) { throw new Exception("too long or empty name"); }
+                _UserName = value;
             }
         }
 
@@ -53,14 +54,16 @@ namespace ClassLibrary_Feedback
         public int Raiting
         {
             get => _Raiting;
-            set { if (value < 1 || value > 5) { throw new Exception("incorrect value of Raiting"); }}
+            set { if (value < 1 || value > 5) { throw new Exception("incorrect value of Raiting"); }
+                _Raiting = value;
+            }
+            
         }
 
         // Getting date
-        private DateTime _Date;  
+        private DateTime _Date = DateTime.UtcNow;  
         public DateTime Date { 
             get => _Date;
-            set => _Date = value;
         }
 
         // sending the feedback
