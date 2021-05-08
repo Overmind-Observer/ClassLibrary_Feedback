@@ -36,8 +36,9 @@ bld/
 Generated\ Files/
 
 # MSTest test Results
-[Tt]est[Rr]esult*/
-[Bb]uild[Ll]og.*
+# [Tt]est[Rr]esult*/    M
+# [Bb]uild[Ll]og.*      M
+#Changed manualy with M
 
 # NUNIT
 *.VisualState.xml
