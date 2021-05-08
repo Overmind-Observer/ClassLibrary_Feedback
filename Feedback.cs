@@ -5,7 +5,7 @@ using System.Net.Mail;
 namespace ClassLibrary_Feedback
 {
 
-    
+
 
     class Feedback
     {
@@ -15,8 +15,8 @@ namespace ClassLibrary_Feedback
         public bool IsSent
         {
             get => _IsSent;
-            set { }
-        
+            set { } // not sure about this
+
         }
 
         // Declair parameters
@@ -25,29 +25,26 @@ namespace ClassLibrary_Feedback
         public string UserName
         {
             get => _UserName;
-            set => _ = _UserName == "" || _UserName.Length > 20 ? throw new Exception("too long or empty name") :
-            _UserName = value;
+            set
+            {
+                if (value == "" || value.Length > 20) { throw new Exception("too long or empty name"); }
+            }
         }
 
         // Getting Email, system will check email validation itself
-        private readonly string _Email;
+        private string _Email;
         public string Email
         {
             get => _Email;
-
-
-            set
-            {
-                _ = new MailAddress(_Email); // have feeling that it is not correct !?
-                _ = Email;
-            }
+            set => _Email = new MailAddress(value).Address;
         }
+
         // Getting Message text can be empty
         private string _Text;
         public string Text
         {
             get => _Text;
-            set => _Text = "";
+            set => _Text = value;
         }
 
         // Getting Raiting with value (1 - 5) check
@@ -56,19 +53,17 @@ namespace ClassLibrary_Feedback
         public int Raiting
         {
             get => _Raiting;
-            set => _ = _Raiting < 1 || _Raiting > 5 ? throw new Exception("incorrect value of Raiting") :
-                _Raiting = value;
+            set { if (value < 1 || value > 5) { throw new Exception("incorrect value of Raiting"); }}
         }
+
         // Getting date
         private DateTime _Date;  
         public DateTime Date { 
             get => _Date;
-            set => _Date = DateTime.Now;
-        } // not sure about this statement !?
-
+            set => _Date = value;
+        }
 
         // sending the feedback
-
         public void Send()
         {
             MailAddress from = new MailAddress("UltimateQuarry@gmail.com");
