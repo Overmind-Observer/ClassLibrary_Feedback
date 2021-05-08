@@ -5,7 +5,7 @@ using System.Net.Mail;
 namespace ClassLibrary_Feedback
 {
 
-
+    
 
     class Feedback
     {
@@ -20,7 +20,7 @@ namespace ClassLibrary_Feedback
         }
 
         // Declair parameters
-        // User name with lenght check (no more than 20 char) and can not be empty check
+        // Getting User name with lenght check (no more than 20 char) and "can not be empty" check
         private string _UserName;
         public string UserName
         {
@@ -28,7 +28,8 @@ namespace ClassLibrary_Feedback
             set => _ = _UserName == "" || _UserName.Length > 20 ? throw new Exception("too long or empty name") :
             _UserName = value;
         }
-        // Email with email validation (in progress)
+
+        // Getting Email, system will check email validation itself
         private readonly string _Email;
         public string Email
         {
@@ -41,7 +42,7 @@ namespace ClassLibrary_Feedback
                 _ = Email;
             }
         }
-        // Message text can be empty
+        // Getting Message text can be empty
         private string _Text;
         public string Text
         {
@@ -49,7 +50,7 @@ namespace ClassLibrary_Feedback
             set => _Text = "";
         }
 
-        // Raiting with value (1 - 5) check
+        // Getting Raiting with value (1 - 5) check
         private int _Raiting;
 
         public int Raiting
