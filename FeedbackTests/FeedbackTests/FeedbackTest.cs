@@ -234,7 +234,7 @@ namespace FeedbackTests
             //arrange
             var feedback = GenerateFeedback();
             feedback.Send();
-            Thread.Sleep(500);
+            Thread.Sleep(500); //this pause is nessesary for letting hdd to work with tests
 
             var nonUniquie = GenerateFeedback();
             nonUniquie.Email = feedback.Email;
