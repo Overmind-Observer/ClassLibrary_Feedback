@@ -106,7 +106,7 @@ namespace ClassLibrary_Feedback
                 throw new NullReferenceException("Raiting cannot be 0");
 
             if (IsSent == true)
-                throw new NullReferenceException("Feedback already sent");
+                throw new Exception("Feedback already sent");
 
             ///Cheking feedback conditions for getting feedback state
             ///
@@ -115,10 +115,10 @@ namespace ClassLibrary_Feedback
             if (checkingFeedback != null)
             {
                 if (UserName != checkingFeedback.UserName)
-                    throw new Exception("Email should be unique"); //is it work correct?
+                    throw new Exception("Email should be unique");
 
-                if (checkingFeedback.IsSent)
-                    throw new Exception("Feedback already sent");
+                //The user cannot send the second feedback by the bussiness requirements
+                throw new Exception("Feedback already sent");
             }
 
             IsSent = true;

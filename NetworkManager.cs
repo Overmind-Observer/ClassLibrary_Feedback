@@ -28,7 +28,7 @@ namespace ClassLibrary_Feedback
 
         public static Feedback GetFeedback(string email)
         {
-            if (File.Exists(email))
+            if (File.Exists(GetPath(email)))
                 return JsonSerializer.Deserialize<Feedback>(File.ReadAllText(GetPath(email)));
 
             return null;

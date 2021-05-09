@@ -187,11 +187,94 @@ namespace FeedbackTests
         }
 
         [TestMethod]
+        public void Test_Email_IsNonValid()
+        {
+            //arrange
+            var feedback = GenerateFeedback(Skip.Email);
+
+            //act
+            try
+            {
+                feedback.Email = "!!!@@@!!!";
+            }
+            catch (Exception) //exception went from Email, it is normal behavior
+            {
+                return;
+            }
+
+            //assert
+            Assert.Fail("No exception was catch");
+        }
+
+        [TestMethod]
         public void Test_Email_SecondSubmission()
         {
             //arrange
-            //act
+            var feedback = GenerateFeedback();
+            feedback.Send();
+            try
+            {
+                feedback.Send();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("sent") == false)
+                    throw ex;
+                return; //exception went from Email, it is normal behavior
+            }
+
             //assert
+            Assert.Fail("No exception was catch");
+        }
+
+        [TestMethod]
+        public void Test_Email_SecondSubmissionByUser()
+        {
+            //arrange
+            var feedback = GenerateFeedback();
+            feedback.Send();
+
+            var nonUniquie = GenerateFeedback();
+            nonUniquie.Email = feedback.Email;
+            nonUniquie.UserName = feedback.UserName;
+
+            try
+            {
+                nonUniquie.Send();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("sent") == false)
+                    throw ex;
+                return; //exception went from Email, it is normal behavior
+            }
+
+            //assert
+            Assert.Fail("No exception was catch");
+        }
+
+        [TestMethod]
+        public void Test_Email_NotUnquie()
+        {
+            //arrange
+            var feedback = GenerateFeedback();
+            feedback.Send();
+
+            var nonUniquie = GenerateFeedback();
+            nonUniquie.Email = feedback.Email;
+            try
+            {
+                nonUniquie.Send();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Email") == false)
+                    throw ex;
+                return; //exception went from Email, it is normal behavior
+            }
+
+            //assert
+            Assert.Fail("No exception was catch");
         }
 
         [TestMethod]
