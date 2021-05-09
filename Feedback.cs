@@ -9,6 +9,8 @@ namespace ClassLibrary_Feedback
     [Serializable]
     public class Feedback
     {
+        public const string AlreadySentException = "Feedback already sent";
+
         /// Feedback state
         private bool _IsSent = false;
 
@@ -61,7 +63,7 @@ namespace ClassLibrary_Feedback
             }
         }
 
-        /// Getting Message text can be empty
+        /// Getting Message (text can be empty)
         private string _Text;
         public string Text
         {
@@ -106,7 +108,7 @@ namespace ClassLibrary_Feedback
                 throw new NullReferenceException("Raiting cannot be 0");
 
             if (IsSent == true)
-                throw new Exception("Feedback already sent");
+                throw new Exception(AlreadySentException);
 
             ///Cheking feedback conditions for getting feedback state
             ///
@@ -118,7 +120,7 @@ namespace ClassLibrary_Feedback
                     throw new Exception("Email should be unique");
 
                 //The user cannot send the second feedback by the bussiness requirements
-                throw new Exception("Feedback already sent");
+                throw new Exception(AlreadySentException);
             }
 
             IsSent = true;

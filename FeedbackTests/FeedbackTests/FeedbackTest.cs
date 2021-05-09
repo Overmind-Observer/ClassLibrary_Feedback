@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ClassLibrary_Feedback;
 using System;
+using System.Threading;
 
 namespace FeedbackTests
 {
@@ -218,7 +219,7 @@ namespace FeedbackTests
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("sent") == false)
+                if (ex.Message != Feedback.AlreadySentException)
                     throw ex;
                 return; //exception went from Email, it is normal behavior
             }
@@ -233,6 +234,7 @@ namespace FeedbackTests
             //arrange
             var feedback = GenerateFeedback();
             feedback.Send();
+            Thread.Sleep(500);
 
             var nonUniquie = GenerateFeedback();
             nonUniquie.Email = feedback.Email;
@@ -242,11 +244,11 @@ namespace FeedbackTests
             {
                 nonUniquie.Send();
             }
-            catch (Exception ex)
+            catch (Exception ex) //User can send only one feedback
             {
-                if (ex.Message.Contains("sent") == false)
+                if (ex.Message != Feedback.AlreadySentException)
                     throw ex;
-                return; //exception went from Email, it is normal behavior
+                return; 
             }
 
             //assert
@@ -259,6 +261,8 @@ namespace FeedbackTests
             //arrange
             var feedback = GenerateFeedback();
             feedback.Send();
+            Thread.Sleep(500);
+
 
             var nonUniquie = GenerateFeedback();
             nonUniquie.Email = feedback.Email;
