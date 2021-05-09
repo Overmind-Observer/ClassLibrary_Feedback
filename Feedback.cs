@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 namespace ClassLibrary_Feedback
 {
@@ -8,7 +9,7 @@ namespace ClassLibrary_Feedback
     [Serializable]
     public class Feedback
     {
-        // Feedback state
+        /// Feedback state
         private bool _IsSent = false;
 
         public bool IsSent
@@ -19,19 +20,26 @@ namespace ClassLibrary_Feedback
         }
 
         /// Declare parameters
-        /// Getting User name with length check (no more than 20 char) and "can not be empty" check
+        /// Getting User name with ckecks of length (no more than 20 char), "can not be empty" and english charasters.
         private string _UserName;
         public string UserName
         {
             get => _UserName;
             set
             {
-                if (value == null || value == "" || value.Length > 20) { throw new Exception("too long or empty name"); }
+                Regex eng = new Regex("a-z, A-Z");
+
+                if (value == null || value == "") { throw new Exception("Name can not be empty or null"); }
+
+                if (value != eng.ToString()) { throw new Exception("Name has to contain only english charasters"); }
+
+                if (value.Length > 20) { throw new Exception("Name is too long"); }
+
                 _UserName = value;
             }
         }
 
-        // Getting Email, system will check email validation itself
+        /// Getting Email, system will check email validation itself
         private string _Email;
         public string Email
         {
@@ -39,7 +47,7 @@ namespace ClassLibrary_Feedback
             set => _Email = new MailAddress(value).Address;
         }
 
-        // Getting Message text can be empty
+        /// Getting Message text can be empty
         private string _Text;
         public string Text
         {
@@ -47,7 +55,7 @@ namespace ClassLibrary_Feedback
             set => _Text = value;
         }
 
-        // Getting Raiting with value (1 - 5) check
+        /// Getting Raiting with value (1 - 5) check
         private int _Raiting = 0;
 
         public int Raiting
@@ -61,35 +69,43 @@ namespace ClassLibrary_Feedback
 
         }
 
-        // Getting date
+        /// Getting date
         private readonly DateTime _Date = DateTime.UtcNow;
         public DateTime Date
         {
             get => _Date;
         }
 
-        // sending the feedback
-        public void Send(string email)
+        /// Sending the feedback
+        /// 
+        /// Empty credentials and feedback's state check
+        /// 
+        public void Send()
         {
             if (Email == null)
-                throw new Exception("Email cannot be empty");
+                throw new NullReferenceException("Email cannot be empty");
 
             if (UserName == null)
-                throw new Exception("UserName cannot be empty");
+                throw new NullReferenceException("UserName cannot be empty");
 
             if (Raiting == 0)
-                throw new Exception("Rating cannot be 0");
+                throw new NullReferenceException("Raiting cannot be 0");
 
             if (IsSent == true)
-                throw new Exception("Feedback already sent");
+                throw new NullReferenceException("Feedback already sent");
 
+            ///Cheking feedback conditions for getting feedback state
+            ///
             Feedback checkingFeedback = NetworkManager.GetFeedback(Email);
 
-            if (UserName != checkingFeedback.UserName)
-                throw new Exception("Email should be unique");
+            if (checkingFeedback != null)
+            {
+                if (UserName != checkingFeedback.UserName)
+                    throw new Exception("Email should be unique"); //is it work correct?
 
-            if (checkingFeedback.IsSent)
-                throw new Exception("Feedback already sent");
+                if (checkingFeedback.IsSent)
+                    throw new Exception("Feedback already sent");
+            }
 
             IsSent = true;
             NetworkManager.Send(this);
