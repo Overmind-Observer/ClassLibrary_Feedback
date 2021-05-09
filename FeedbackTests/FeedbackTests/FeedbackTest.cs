@@ -49,7 +49,7 @@ namespace FeedbackTests
             var feedback = new Feedback();
 
             if (skip != Skip.Name)
-                feedback.UserName = GenerateString(9);
+                feedback.UserName = GenerateString(15);
 
             if (skip != Skip.Email)
                 feedback.Email = GenerateRandomEmail();
@@ -151,11 +151,11 @@ namespace FeedbackTests
             //act
             try
             {
-                feedback.Send();
+                feedback.UserName = GenerateString(22);
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("UserName") == false)
+                if (ex.Message.Contains("Name") == false)
                     throw ex;
                 return; //exception went from UserName, it is normal behavior
             }
