@@ -27,13 +27,19 @@ namespace ClassLibrary_Feedback
             get => _UserName;
             set
             {
-                Regex eng = new Regex("a-z, A-Z");
 
-                if (value == null || value == "") { throw new Exception("Name can not be empty or null"); }
-
-                if (value != eng.ToString()) { throw new Exception("Name has to contain only english charasters"); }
+                if (value == null || value == "") { throw new NullReferenceException("Name can not be empty or null"); }
 
                 if (value.Length > 20) { throw new Exception("Name is too long"); }
+
+                string pattern = "[azAZ]";
+
+                Match eng = Regex.Match(pattern, value);
+
+                if (eng.Success) 
+                { 
+                    throw new Exception("Name has to contain only english charasters ") ; 
+                }
 
                 _UserName = value;
             }
@@ -44,7 +50,15 @@ namespace ClassLibrary_Feedback
         public string Email
         {
             get => _Email;
-            set => _Email = new MailAddress(value).Address;
+            set {
+                try
+                {
+                    _Email = new MailAddress(value).Address;
+                }catch(Exception ex)
+                {
+                    throw new Exception(ex.Message + " " + value);
+                }
+            }
         }
 
         /// Getting Message text can be empty

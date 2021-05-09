@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ClassLibrary_Feedback;
 using System;
+using Faker;
 
 namespace FeedbackTests
 {
@@ -18,8 +19,8 @@ namespace FeedbackTests
             Rating,
             Feedback
         }
-
-        /// Random name generator
+        
+        /// Random string generator
         /// 
         string GenerateString(int lenght)
         {
@@ -38,10 +39,10 @@ namespace FeedbackTests
         string GenerateRandomEmail()
         {
             var rnd = new Random();
-            string email = GenerateString(rnd.Next(10)) + "@" + GenerateString(rnd.Next(10)) + ".net";
+            string email = GenerateString(rnd.Next(1, 10)) + "@" + GenerateString(rnd.Next(1, 10)) + ".net";
             return email;
         }
-
+        
         /// Feedback generator
         /// 
         Feedback GenerateFeedback(Skip skip = Skip.None)
@@ -49,13 +50,13 @@ namespace FeedbackTests
             var feedback = new Feedback();
 
             if (skip != Skip.Name)
-                feedback.UserName = GenerateString(10);
+                feedback.UserName = GenerateString(9);
 
             if (skip != Skip.Email)
                 feedback.Email = GenerateRandomEmail();
 
             if (skip != Skip.Rating)
-                feedback.Raiting = 5;
+                feedback.Raiting = 4;
 
             if (skip != Skip.Feedback)
                 feedback.Text = GenerateString(200);
@@ -85,7 +86,7 @@ namespace FeedbackTests
             //act
             try
             {
-                feedback.Send();
+                feedback.UserName = "";
             }
             catch (NullReferenceException ex)
             {
@@ -109,7 +110,7 @@ namespace FeedbackTests
             {
                 feedback.Send();
             }
-            catch (Exception ex)
+            catch (NullReferenceException ex)
             {
                 if (ex.Message.Contains("UserName") == false)
                     throw ex;
@@ -129,11 +130,11 @@ namespace FeedbackTests
             //act
             try
             {
-
+                feedback.UserName = "Non-English chars";
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Name") == false)
+                if (ex.Message.Contains("english") == false)
                     throw ex;
                 return; //exception went from UserName, it is normal behavior
             }
