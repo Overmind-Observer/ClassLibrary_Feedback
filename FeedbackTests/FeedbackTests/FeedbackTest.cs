@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ClassLibrary_Feedback;
 using System;
-using Faker;
 
 namespace FeedbackTests
 {
@@ -39,7 +38,7 @@ namespace FeedbackTests
         string GenerateRandomEmail()
         {
             var rnd = new Random();
-            string email = GenerateString(rnd.Next(1, 10)) + "@" + GenerateString(rnd.Next(1, 10)) + ".net";
+            string email = GenerateString(rnd.Next(1, 10)) + "@" + GenerateString(rnd.Next(1, 10)) + ".com";
             return email;
         }
         
@@ -59,7 +58,7 @@ namespace FeedbackTests
                 feedback.Raiting = 5;
 
             if (skip != Skip.Feedback)
-                feedback.Text = GenerateString(200);
+                feedback.Text =  GenerateString(200);
 
             return feedback;
         }
