@@ -32,13 +32,11 @@ namespace ClassLibrary_Feedback
 
                 if (value.Length > 20) { throw new Exception("Name is too long"); }
 
-                string pattern = "[azAZ]";
+                Regex eng = new Regex("[AZ,az]");
 
-                Match eng = Regex.Match(pattern, value);
-
-                if (eng.Success) 
+                if (eng.IsMatch(value)) 
                 { 
-                    throw new Exception("Name has to contain only english charasters ") ; 
+                    throw new Exception("Name has to contain only english charasters " + value) ; 
                 }
 
                 _UserName = value;

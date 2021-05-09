@@ -56,7 +56,7 @@ namespace FeedbackTests
                 feedback.Email = GenerateRandomEmail();
 
             if (skip != Skip.Rating)
-                feedback.Raiting = 4;
+                feedback.Raiting = 5;
 
             if (skip != Skip.Feedback)
                 feedback.Text = GenerateString(200);
